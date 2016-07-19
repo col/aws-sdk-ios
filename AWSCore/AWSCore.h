@@ -13,7 +13,11 @@
 // permissions and limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
+#if TARGET_OS_IPHONE
+    #import <UIKit/UIKit.h>
+#else
+    #import <AppKit/AppKit.h> 
+#endif
 
 //! Project version number for AWSCore.
 FOUNDATION_EXPORT double AWSCoreVersionNumber;

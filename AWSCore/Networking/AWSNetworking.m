@@ -14,7 +14,11 @@
 //
 
 #import "AWSNetworking.h"
-#import <UIKit/UIKit.h>
+#if TARGET_OS_IPHONE
+    #import <UIKit/UIKit.h>
+#else
+    #import <AppKit/AppKit.h>
+#endif
 #import "AWSBolts.h"
 #import "AWSCategory.h"
 #import "AWSModel.h"
