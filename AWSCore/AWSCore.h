@@ -13,7 +13,7 @@
 // permissions and limitations under the License.
 //
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IOS
     #import <UIKit/UIKit.h>
 #else
     #import <AppKit/AppKit.h> 
