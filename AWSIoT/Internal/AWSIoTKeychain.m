@@ -57,6 +57,7 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     NSMutableDictionary * publicKeyAttr = [[NSMutableDictionary alloc] init];
     NSMutableDictionary * keyPairAttr = [[NSMutableDictionary alloc] init];
     
+#if TARGET_OS_IOS
     [privateKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecAttrIsPermanent];
     [privateKeyAttr setObject:privateTag forKey:(id)kSecAttrApplicationTag];
     
@@ -68,6 +69,19 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     
     [keyPairAttr setObject:privateKeyAttr forKey:(id)kSecPrivateKeyAttrs];
     [keyPairAttr setObject:publicKeyAttr forKey:(id)kSecPublicKeyAttrs];
+#else
+    [privateKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecAttrIsPermanent];
+    [privateKeyAttr setObject:[privateTag dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecAttrApplicationTag];
+    
+    [publicKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecAttrIsPermanent];
+    [publicKeyAttr setObject:[publicTag dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecAttrApplicationTag];
+    
+    [keyPairAttr setObject:(id)kSecAttrKeyTypeRSA forKey:(id)kSecAttrKeyType];
+    [keyPairAttr setObject:[NSNumber numberWithUnsignedInteger:2048] forKey:(id)kSecAttrKeySizeInBits];
+    
+    [keyPairAttr setObject:privateKeyAttr forKey:(id)kSecPrivateKeyAttrs];
+    [keyPairAttr setObject:publicKeyAttr forKey:(id)kSecPublicKeyAttrs];
+#endif
     
     sanityCheck = SecKeyGeneratePair((CFDictionaryRef)keyPairAttr, &publicKeyRef, &privateKeyRef);
     if (sanityCheck != noErr) {
