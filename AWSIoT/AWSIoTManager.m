@@ -141,7 +141,9 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     AWSIoTCreateCertificateFromCsrRequest *request = [[AWSIoTCreateCertificateFromCsrRequest alloc] init];
     request.setAsActive = @YES;
 
-    request.certificateSigningRequest = [AWSIoTKeychain base64Encode:csrData];
+    NSString *certificateSigningRequest = [AWSIoTKeychain base64Encode:csrData];
+    AWSLogInfo(@"certificateSigningRequest: %@", certificateSigningRequest);
+    request.certificateSigningRequest = certificateSigningRequest;
 
     [[self.IoT createCertificateFromCsr:request] continueWithBlock:^id(AWSTask *task) {
         NSError *error = task.error;
