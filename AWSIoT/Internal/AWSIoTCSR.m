@@ -63,6 +63,7 @@ unsigned char setTag = 0x31;
     NSString *privateTag = [AWSIoTKeychain.privateKeyTag stringByAppendingString:certificateId];
     
     _publicKeyBits = [AWSIoTKeychain getPublicKeyBits:publicTag];
+    AWSLogDebug("Public Key: %@", NSString(data:_publicKeyBits, encoding:NSUTF8StringEncoding));
     SecKeyRef privateKeyRef = [AWSIoTKeychain getPrivateKeyRef:privateTag];
 
     if (!_publicKeyBits || !privateKeyRef) {
